@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SunGil OS</title>
+  <meta name="theme-color" content="#0f3d36" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f5f1e8;color:#18342f} .app{max-width:480px;margin:0 auto;min-height:100vh;background:linear-gradient(#fffaf0,#f4efe4);padding:18px 18px 90px}.hero{background:#0f3d36;color:white;border-radius:28px;padding:24px;box-shadow:0 14px 30px #0f3d3622}.hero h1{margin:0;font-size:30px}.hero p{opacity:.9;line-height:1.5}.card{background:white;border:1px solid #eadfca;border-radius:22px;padding:18px;margin:16px 0;box-shadow:0 10px 24px #2d2d2d0d}.row{display:flex;gap:10px;align-items:center;justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}button,select,input,textarea{font:inherit}button{border:0;border-radius:16px;padding:13px 15px;background:#0f3d36;color:white;font-weight:800}button.light{background:#efe6d2;color:#18342f}select,input,textarea{width:100%;border:1px solid #d8ccb6;border-radius:14px;padding:12px;background:#fff}textarea{min-height:90px}.score{font-size:38px;font-weight:900}.tabs{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);max-width:480px;width:calc(100% - 24px);display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:#fffffff2;border:1px solid #eadfca;border-radius:22px;padding:8px}.tabs button{font-size:12px;padding:10px 4px;background:#eee5d4;color:#18342f}.tabs button.active{background:#0f3d36;color:white}.hidden{display:none}.pill{display:inline-block;background:#efe6d2;border-radius:999px;padding:7px 10px;margin:3px;font-size:13px}.bar{height:14px;background:#eadfca;border-radius:999px;overflow:hidden}.bar span{display:block;height:100%;background:#0f3d36} small{color:#6b685f}.list{line-height:1.8}</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <h1>SunGil OS</h1>
+    <p>숨길 아카데미 골든 12주 파일럿 앱</p>
+    <select id="member"></select>
+  </section>
+
+  <main id="home" class="page">
+    <div class="card"><div class="row"><div><b>오늘의 여정</b><br><small>12주 중 현재 기록</small></div><div class="score" id="weekNow">1주</div></div></div>
+    <div class="card"><b>오늘의 루틴</b><p class="list">① 코로 편안히 숨 느끼기<br>② 뉴로페이스 5분 루틴<br>③ 물 한 잔<br>④ 오늘의 한 줄 기록</p><button onclick="show('routine')">오늘 시작</button></div>
+  </main>
+
+  <main id="routine" class="page hidden">
+    <div class="card"><b>5분 숨길 루틴</b><p class="score" id="timer">05:00</p><div class="grid"><button onclick="startTimer()">START</button><button class="light" onclick="resetTimer()">RESET</button></div></div>
+  </main>
+
+  <main id="record" class="page hidden">
+    <div class="card"><b>주간 기록</b><p><small>컨디션 점수 0~10</small></p><input id="score" type="range" min="0" max="10" value="5" oninput="scoreView.textContent=this.value"><div class="score" id="scoreView">5</div><textarea id="note" placeholder="이번 주의 발견 한 줄"></textarea><button onclick="saveRecord()">기록 저장</button></div>
+    <div class="card"><b>생활습관 7영역</b><div id="habits"></div><button onclick="saveHabits()">7영역 저장</button></div>
+  </main>
+
+  <main id="growth" class="page hidden">
+    <div class="card"><b>성장 그래프</b><div id="growthList"></div></div>
+  </main>
+
+  <main id="coach" class="page hidden">
+    <div class="card"><b>코치 관찰</b><textarea id="coachNote" placeholder="눈에 보인 사실과 변화를 짧게 기록"></textarea><button onclick="saveCoach()">코치 기록 저장</button></div>
+    <div class="card"><b>최근 기록</b><div id="coachList"></div></div>
+  </main>
+</div>
+<nav class="tabs"><button class="active" onclick="show('home')">홈</button><button onclick="show('routine')">루틴</button><button onclick="show('record')">기록</button><button onclick="show('growth')">성장</button><button onclick="show('coach')">코치</button></nav>
+<script>
+const members=['영 대표','파일럿 1','파일럿 2','파일럿 3','파일럿 4','파일럿 5','파일럿 6','파일럿 7'];
+const habitNames=['수면','호흡','물','영양','자세','보행','마인드'];
+const $=id=>document.getElementById(id); let current=localStorage.sgMember||members[0];
+member.innerHTML=members.map(m=>`<option ${m===current?'selected':''}>${m}</option>`).join(''); member.onchange=()=>{current=member.value;localStorage.sgMember=current;render()};
+habits.innerHTML=habitNames.map(h=>`<label class="pill">${h} <select data-habit="${h}">${[1,2,3,4,5].map(n=>`<option>${n}</option>`).join('')}</select></label>`).join('');
+function key(){return 'sungil-'+current} function data(){return JSON.parse(localStorage.getItem(key())||'{"records":[],"coach":[],"habits":[]}')} function put(d){localStorage.setItem(key(),JSON.stringify(d));render()}
+function show(id){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));$(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));[...document.querySelectorAll('.tabs button')].find(b=>b.textContent.includes({home:'홈',routine:'루틴',record:'기록',growth:'성장',coach:'코치'}[id])).classList.add('active');render()}
+function saveRecord(){let d=data();d.records.push({date:new Date().toLocaleDateString(),score:+score.value,note:note.value});note.value='';put(d);alert('저장되었습니다')}
+function saveHabits(){let d=data();d.habits.push({date:new Date().toLocaleDateString(),items:[...document.querySelectorAll('[data-habit]')].map(s=>({name:s.dataset.habit,value:+s.value}))});put(d);alert('저장되었습니다')}
+function saveCoach(){let d=data();d.coach.push({date:new Date().toLocaleDateString(),note:coachNote.value});coachNote.value='';put(d);alert('저장되었습니다')}
+let remain=300, tick=null; function drawTimer(){timer.textContent=String(Math.floor(remain/60)).padStart(2,'0')+':'+String(remain%60).padStart(2,'0')} function startTimer(){if(tick)return;tick=setInterval(()=>{remain--;drawTimer();if(remain<=0){clearInterval(tick);tick=null;alert('수고하셨습니다. 오늘도 1% 성장했습니다.');remain=300;drawTimer()}},1000)} function resetTimer(){clearInterval(tick);tick=null;remain=300;drawTimer()}
+function render(){let d=data();weekNow.textContent=Math.max(1,d.records.length)+'주';growthList.innerHTML=d.records.length?d.records.map((r,i)=>`<p><b>${i+1}주차</b> ${r.date} · ${r.score}점<br><span class="bar"><span style="width:${r.score*10}%"></span></span><small>${r.note||''}</small></p>`).join(''):'아직 기록이 없습니다.';coachList.innerHTML=[...d.records.slice(-5).map(r=>`<p>기록 ${r.date}: ${r.score}점 · ${r.note||''}</p>`),...d.coach.slice(-5).map(c=>`<p>코치 ${c.date}: ${c.note}</p>`)].join('')||'아직 기록이 없습니다.'}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})} render(); drawTimer();
+</script>
+</body></html>
