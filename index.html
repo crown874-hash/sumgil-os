@@ -1,33 +1,87 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>숨길 Academy</title>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f4d43">
+<title>숨길 Academy Pilot</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#0d4f46,#f3efe5);display:flex;justify-content:center}
-.wrap{max-width:430px;min-height:100vh;background:#f7f4ed}
-.hero{background:#0d4f46;color:#fff;padding:48px 28px;border-bottom-left-radius:36px;border-bottom-right-radius:36px}
-.badge{display:inline-block;padding:6px 12px;background:#ffffff22;border-radius:99px;font-size:12px}
-h1{font-size:40px;margin:18px 0 10px}
-p{line-height:1.7;opacity:.92}
-.card{margin:-30px 18px 20px;background:#fff;border-radius:24px;padding:24px;box-shadow:0 12px 35px rgba(0,0,0,.12)}
-.btn{display:block;text-align:center;text-decoration:none;background:#0d4f46;color:#fff;padding:18px;border-radius:16px;font-weight:bold;font-size:18px;margin-top:18px}
-.info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
-.box{background:#f4f2ec;border-radius:16px;padding:16px;text-align:center}
-small{color:#666}
-.footer{text-align:center;padding:18px;color:#666}
-</style></head>
-<body><div class="wrap">
-<div class="hero">
+:root{--g:#0f4d43;--g2:#1c6a5e;--bg:#f2eee5;--paper:#fff;--ink:#17211e;--muted:#69736f;--line:#ddd7cc}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;background:linear-gradient(180deg,#6f998f 0,#eef0ea 60%,#f4efe6 100%);color:var(--ink)}
+.wrap{width:min(720px,100%);margin:auto;min-height:100vh;padding-bottom:50px}
+.hero{background:var(--g);color:#fff;padding:56px 32px 70px;border-radius:0 0 38px 38px}
+.badge{display:inline-block;background:#ffffff18;border:1px solid #ffffff24;border-radius:99px;padding:7px 13px;font-size:12px}
+h1{font-size:48px;line-height:1.06;margin:25px 0 20px}.hero p{font-size:19px;line-height:1.65;margin:0}
+.card{margin:-34px 22px 20px;background:var(--paper);border-radius:28px;padding:28px;box-shadow:0 20px 55px #153e3525}
+.card h2{font-size:28px;margin:4px 0 16px}.card p{line-height:1.8}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+.stat{background:#f4f1ea;border-radius:18px;padding:20px;text-align:center}.stat strong{font-size:21px}.stat span{display:block;color:var(--muted);margin-top:4px}
+.btn{width:100%;border:0;border-radius:17px;background:var(--g);color:white;padding:18px;font-size:19px;font-weight:800;cursor:pointer}
+.form-card{margin:20px 22px;background:#fff;border-radius:28px;padding:28px;box-shadow:0 20px 55px #153e351c;display:none}
+.form-card.show{display:block}
+.field{margin:0 0 16px}label{font-weight:800;font-size:14px;display:block;margin-bottom:8px}
+input,select,textarea{width:100%;padding:14px;border:1px solid var(--line);border-radius:14px;font:inherit}textarea{min-height:100px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check{border:1px solid var(--line);border-radius:14px;padding:12px;font-weight:500}.check input{width:auto;margin-right:8px}
+.consent{background:#f4f1ea;border-radius:14px;padding:13px;font-size:12px;line-height:1.6;margin:15px 0}.consent input{width:auto}
+.success{display:none;text-align:center}.success.show{display:block}.mark{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:var(--g);color:white;font-size:34px;margin:auto}
+.footer{text-align:center;color:#5d6964;padding:18px}
+@media(max-width:560px){h1{font-size:42px}.hero{padding:42px 26px 65px}.checks{grid-template-columns:1fr}.card,.form-card{margin-left:14px;margin-right:14px;padding:23px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero">
 <span class="badge">PILOT PROJECT</span>
 <h1>숨길<br>Academy</h1>
 <p>사람을 건강하게,<br>사회를 건강하게.</p>
-</div>
-<div class="card">
+</section>
+
+<section class="card" id="intro">
 <h2>7명 파일럿 모집</h2>
-<p>BBB(Balance of Brain & Body)를 바탕으로 생활 루틴을 기록하고 스스로를 관찰하는 파일럿 프로젝트입니다.</p>
-<div class="info">
-<div class="box"><strong>7명</strong><br><small>모집</small></div>
-<div class="box"><strong>4주</strong><br><small>루틴</small></div>
+<p>BBB(Balance of Brain &amp; Body)를 바탕으로 생활 루틴을 기록하고 스스로를 관찰하는 파일럿 프로젝트입니다.</p>
+<div class="stats"><div class="stat"><strong>7명</strong><span>모집</span></div><div class="stat"><strong>4주</strong><span>루틴</span></div></div>
+<button class="btn" id="applyBtn" type="button">파일럿 참가 신청</button>
+</section>
+
+<section class="form-card" id="formCard">
+<div id="formView">
+<h2>파일럿 참가 신청</h2>
+<p>약 2분이면 등록할 수 있습니다.</p>
+<form id="form">
+<div class="field"><label>이름 *</label><input name="name" required placeholder="이름을 입력해 주세요"></div>
+<div class="field"><label>휴대전화 *</label><input name="phone" required placeholder="010-0000-0000" inputmode="tel"></div>
+<div class="field"><label>연령대</label><select name="age"><option value="">선택</option><option>30대</option><option>40대</option><option>50대</option><option>60대</option><option>70대 이상</option></select></div>
+<div class="field"><label>직업</label><input name="job" placeholder="직업을 입력해 주세요"></div>
+<div class="field"><label>참여 목적 *</label>
+<div class="checks">
+<label class="check"><input type="checkbox" name="goal" value="호흡 습관 관찰">호흡 습관 관찰</label>
+<label class="check"><input type="checkbox" name="goal" value="수면 루틴 점검">수면 루틴 점검</label>
+<label class="check"><input type="checkbox" name="goal" value="자세와 움직임 관찰">자세와 움직임 관찰</label>
+<label class="check"><input type="checkbox" name="goal" value="생활습관 루틴 만들기">생활습관 루틴 만들기</label>
+</div></div>
+<div class="field"><label>관찰하고 싶은 점</label><textarea name="memo" placeholder="간단히 적어 주세요"></textarea></div>
+<div class="consent"><label><input type="checkbox" required> 개인정보 수집·이용에 동의합니다. 본 프로그램은 의료행위나 진단·치료를 목적으로 하지 않는 생활습관 교육 프로그램입니다.</label></div>
+<button class="btn" type="submit">참가 등록 완료</button>
+</form>
 </div>
-<a class="btn" href="#">파일럿 참가 신청</a>
+<div class="success" id="success">
+<div class="mark">✓</div><h2>등록이 완료되었습니다</h2><p><strong id="successName"></strong>님, 숨길 아카데미에 오신 것을 환영합니다.</p>
+<button class="btn" id="again" type="button">다른 참가자 등록</button>
 </div>
+</section>
 <div class="footer">BBB with JOY</div>
-</div></body></html>
+</main>
+<script>
+const btn=document.getElementById('applyBtn'), card=document.getElementById('formCard');
+btn.addEventListener('click',()=>{card.classList.add('show');setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'start'}),50)});
+document.getElementById('form').addEventListener('submit',e=>{
+ e.preventDefault();
+ const goals=[...document.querySelectorAll('input[name="goal"]:checked')].map(x=>x.value);
+ if(!goals.length){alert('참여 목적을 한 가지 이상 선택해 주세요.');return}
+ const f=e.currentTarget, data={name:f.name.value.trim(),phone:f.phone.value.trim(),age:f.age.value,job:f.job.value.trim(),goals,memo:f.memo.value.trim(),createdAt:new Date().toISOString()};
+ const all=JSON.parse(localStorage.getItem('sumgil_participants')||'[]');all.unshift(data);localStorage.setItem('sumgil_participants',JSON.stringify(all));
+ document.getElementById('formView').style.display='none';document.getElementById('successName').textContent=data.name;document.getElementById('success').classList.add('show');card.scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('again').addEventListener('click',()=>{document.getElementById('form').reset();document.getElementById('success').classList.remove('show');document.getElementById('formView').style.display='block'});
+</script>
+</body></html>
