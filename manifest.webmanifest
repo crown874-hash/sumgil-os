@@ -1,1 +1,16 @@
-{"name":"SunGil OS","short_name":"SunGil OS","start_url":"./","display":"standalone","background_color":"#f5f1e8","theme_color":"#0f3d36","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]}
+{
+  "name": "숨길 아카데미 파일럿",
+  "short_name": "숨길 아카데미",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4efe5",
+  "theme_color": "#0f4d43",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
